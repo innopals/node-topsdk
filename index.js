@@ -94,14 +94,16 @@ function request(endpoint, args, secret, type, callback) {
   });
 }
 
-function TopClient(key, secret, endpoint) {
+function TopClient(key, secret, endpoint, useValidators) {
   if (!endpoint) endpoint = 'http://gw.api.taobao.com/router/rest';
+  if (typeof useValidators !== 'boolean') useValidators = true;
   this.execute = function(method, args, type, callback) {
     if (typeof type === 'function') {
       callback = type;
       type = null;
     }
     var proc = new Promise(function(f, r) {
+      if (useValidators) require('./validator')(method, args);
       args = Object.assign({}, args, { method: method, app_key: key });
       request(endpoint, args, secret, type, function(err, data) {
         if (err) {
