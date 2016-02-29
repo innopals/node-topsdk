@@ -1,0 +1,19 @@
+{
+  "name": "mc-topsdk",
+  "version": "0.0.1",
+  "description": "Taobao Open API Client by MingChuan.",
+  "keywords": [
+    "top",
+    "taobao",
+    "open api",
+    "top client"
+  ],
+  "main": "index.js",
+  "dependencies": {
+    "expect.js": "^0.3.1",
+    "urllib": "^2.8.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  }
+}
