@@ -9,10 +9,10 @@ function checkField(args, name, type, required) {
       if (typeof args[name] !== 'string') throw new Error("Parameter " + name + ' should be a string.');
       break;
     case 'Number':
-      if (typeof args[name] !== 'number') throw new Error("Parameter " + name + ' should be a number.');
+      if (typeof args[name] !== 'number' && args[name] != parseFloat(args[name])) throw new Error("Parameter " + name + ' should be a number.');
       break;
     case 'Boolean':
-      if (typeof args[name] !== 'boolean') throw new Error("Parameter " + name + ' should be a boolean.');
+      if (typeof args[name] !== 'boolean' && args[name] !== 'true' && args[name] !== 'false') throw new Error("Parameter " + name + ' should be a boolean.');
       break;
   }
 }
