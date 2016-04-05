@@ -1,6 +1,6 @@
 {
-  "name": "mc-topsdk",
-  "version": "0.0.1",
+  "name": "topsdk",
+  "version": "1.0.0",
   "description": "Taobao Open API Client by MingChuan.",
   "keywords": [
     "top",
