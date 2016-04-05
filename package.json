@@ -1,6 +1,6 @@
 {
   "name": "topsdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Taobao Open API Client by MingChuan.",
   "keywords": [
     "top",
@@ -8,6 +8,8 @@
     "open api",
     "top client"
   ],
+  "repository": "mbxc/node-topsdk",
+  "license": "MIT",
   "main": "index.js",
   "dependencies": {
     "urllib": "^2.8.0"
