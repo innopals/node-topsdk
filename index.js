@@ -86,7 +86,7 @@ function request(endpoint, args, secret, type, callback) {
         err.code = errRes.code;
         err.sub_code = errRes.sub_code;
         err.data = buffer.toString();
-        data = null;
+        // data = null;
       }
     }
 
@@ -94,9 +94,16 @@ function request(endpoint, args, secret, type, callback) {
   });
 }
 
-function TopClient(key, secret, endpoint, useValidators) {
+function TopClient(key, secret, endpoint, options) {
+  if (typeof endpoint === 'object' && !options) {
+    options = endpoint
+    endpoint = options.endpoint;
+  }
+  if (!options) options = {};
   if (!endpoint) endpoint = 'http://gw.api.taobao.com/router/rest';
-  if (typeof useValidators !== 'boolean') useValidators = true;
+  var useValidators = true, rawResponse = false;
+  if (typeof options.useValidators === 'boolean') useValidators = options.useValidators;
+  if (typeof options.rawResponse === 'boolean') rawResponse = options.rawResponse;
   this.execute = function(method, args, type, callback) {
     if (typeof type === 'function') {
       callback = type;
@@ -106,6 +113,10 @@ function TopClient(key, secret, endpoint, useValidators) {
       if (useValidators) require('./validator')(method, args);
       args = Object.assign({}, args, { method: method, app_key: key });
       request(endpoint, args, secret, type, function(err, data) {
+        if (rawResponse) {
+          f(data);
+          return;
+        }
         if (err) {
           return r(err);
         }

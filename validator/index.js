@@ -1,4 +1,5 @@
-'use strict'
+'use strict';
+
 function checkField(args, name, type, required) {
   if (typeof args[name] === 'undefined') {
     if (required) throw new Error("Parameter " + name + ' is required.');
@@ -21,7 +22,7 @@ module.exports = function(method, args) {
   var validate;
   try {
     validate = require('./validators/' + method);
-  } catch(e) { 
+  } catch(e) {
     // does not have a validator
     return;
   }
