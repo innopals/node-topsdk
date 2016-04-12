@@ -50,7 +50,7 @@ function request(endpoint, args, secret, type, callback) {
   }, args);
 
   Object.keys(args).forEach(key => {
-    if (typeof args[key] === 'object') args[k] = JSON.stringify(args[k]);
+    if (typeof args[key] === 'object') args[key] = JSON.stringify(args[key]);
   });
 
   args.sign = sign(secret, args);
