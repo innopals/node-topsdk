@@ -31,7 +31,6 @@ module.exports = function(args, check) {
   check(args, "regin_year", "String");
   check(args, "scholisat", "String");
   check(args, "series_books_name", "String");
-  check(args, "spu_img", "String");
   check(args, "summary", "String");
   check(args, "translator", "String");
 }

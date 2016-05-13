@@ -1,7 +1,7 @@
 'use strict'
 module.exports = function(args, check) {
   check(args, "end_date", "Date");
-  check(args, "fields", "Field List", true);
+  check(args, "fields", "String", true);
   check(args, "num_iid", "Number");
   check(args, "page_no", "Number");
   check(args, "page_size", "Number");

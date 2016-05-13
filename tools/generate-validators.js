@@ -9,7 +9,7 @@ Object.keys(def).forEach(method => {
 module.exports = function(args, check) {
 ${spec.map(field =>
   `  check(args, ${JSON.stringify(field.name)}, ${JSON.stringify(field.type)}${field.required ? ', true' : ''});`
-).join('\n')}
+).join('\r\n')}
 }
 `;
   fs.writeFileSync('validator/validators/' + method + '.js', code, 'utf8');

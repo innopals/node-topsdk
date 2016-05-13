@@ -24,7 +24,7 @@ module.exports = function(args, check) {
   check(args, "product_id", "Number");
   check(args, "promoted_status", "Boolean");
   check(args, "prov", "String");
-  check(args, "remove_fields", "Field List");
+  check(args, "remove_fields", "String");
   check(args, "seller_cs_phone", "String");
   check(args, "shop_cats", "String");
   check(args, "skus", "String");

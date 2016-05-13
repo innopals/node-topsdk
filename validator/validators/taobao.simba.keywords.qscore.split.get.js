@@ -1,0 +1,6 @@
+'use strict'
+module.exports = function(args, check) {
+  check(args, "ad_group_id", "Number", true);
+  check(args, "bidword_ids", "Number", true);
+  check(args, "nick", "String");
+}
