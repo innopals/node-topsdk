@@ -20,7 +20,7 @@ describe("Testing taobao top sdk upload file with session", function() {
       img: {
         value: buffer,
         options: {
-          filename: 'ok.png'
+          filename: 'ok.png' // file name is required.
         }
       },
       image_input_title: 'ok.png',
