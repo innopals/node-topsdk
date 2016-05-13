@@ -1,4 +1,5 @@
-var urllib = require('urllib');
+var request = require('request');
+var Stream = require('stream');
 var util = require('./util');
 var http = require('http');
 var agent = new http.Agent({ keepAlive: true, keepAliveMsecs: 5000 });
@@ -18,6 +19,12 @@ var IGNORE_ERROR_CODES = {
   'isv.user-not-exist:invalid-nick': 1
 };
 
+var REQUEST_TYPES = {
+  "get": "GET",
+  "post": "POST",
+  "file_upload": "FILE_UPLOAD"
+};
+
 /**
  * Sign API request.
  * see http://open.taobao.com/doc/detail.htm?id=111#s6
@@ -28,12 +35,12 @@ var IGNORE_ERROR_CODES = {
  */
 function sign(secret, args) {
   var sorted = Object.keys(args).sort();
-  var basestring = sorted.map(key => key + args[key]).join('');
+  var basestring = sorted.map(function(key) { return key + args[key]; }).join('');
   basestring = secret + basestring + secret;
   return util.md5(basestring).toUpperCase();
 }
 
-function request(endpoint, args, secret, type, callback) {
+function request_api(endpoint, args, secret, type, callback) {
   if (typeof type === 'function') {
     callback = type;
     type = null;
@@ -42,26 +49,38 @@ function request(endpoint, args, secret, type, callback) {
   if (err) {
     return callback(err);
   }
+  type = REQUEST_TYPES[String(type).toLowerCase()] || "POST";
   args = Object.assign({
     timestamp: util.YYYYMMDDHHmmss(),
     format: 'json',
     v: '2.0',
     sign_method: 'md5'
   }, args);
+  var args2sign = {};
 
-  Object.keys(args).forEach(key => {
-    if (typeof args[key] === 'object') args[key] = JSON.stringify(args[key]);
+  Object.keys(args).forEach(function(key) {
+    var value = args[key];
+    if (value instanceof Buffer || value.value instanceof Buffer || value instanceof Stream || value.value instanceof Stream) {
+      // TODO buffer without filename is not accepted. 
+      if (type !== 'FILE_UPLOAD') {
+        delete args[key];
+      }
+      return;
+    }
+    if (typeof value === 'object') args[key] = JSON.stringify(value);
+    args2sign[key] = value;
   });
 
-  args.sign = sign(secret, args);
-  type = type === 'GET' ? 'GET' : 'POST';
+  args.sign = sign(secret, args2sign);
 
   var options = {
-    type: type,
-    data: args,
+    url: endpoint,
+    method: type != 'GET' ? 'POST' : 'GET',
+    [type === 'FILE_UPLOAD' ? "formData" : "form"]: args,
     agent: agent
   };
-  urllib.request(endpoint, options, function(err, buffer) {
+
+  request(options, function(err, response, buffer) {
     var data;
     if (buffer) {
       buffer = _wrapJSON(buffer.toString());
@@ -112,7 +131,7 @@ function TopClient(key, secret, endpoint, options) {
     var proc = new Promise(function(f, r) {
       if (useValidators) require('./validator')(method, args);
       args = Object.assign({}, args, { method: method, app_key: key });
-      request(endpoint, args, secret, type, function(err, data) {
+      request_api(endpoint, args, secret, type, function(err, data) {
         if (rawResponse) {
           f(data);
           return;

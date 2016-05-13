@@ -12,7 +12,7 @@
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
-    "urllib": "^2.8.0"
+    "request": "^2.72.0"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
