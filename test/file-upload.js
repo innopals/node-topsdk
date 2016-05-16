@@ -48,6 +48,20 @@ describe("Testing taobao top sdk upload file with session", function() {
     }).catch(done);
   });
 
+  it("Get picture id correctly.", function(done) {
+    if (!session) {
+      expect(!!session).to.eql(true);
+      done();
+    }
+    client.execute('taobao.picture.get', {
+      session: session,
+      picture_id: "103890219696510122"
+    }).then(function(data) {
+      expect((data.pictures.picture[0] || {}).picture_id).to.eql("103890219696510122");
+      done();
+    }).catch(done);
+  });
+
   after(function(done) {
     if (picIds.length === 0) {
       done();

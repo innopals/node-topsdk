@@ -1,4 +1,5 @@
 var request = require('request');
+var JSON = require('json-bigint')({ "storeAsString": true });
 var Stream = require('stream');
 var util = require('./util');
 var http = require('http');
@@ -61,7 +62,7 @@ function request_api(endpoint, args, secret, type, callback) {
   Object.keys(args).forEach(function(key) {
     var value = args[key];
     if (value instanceof Buffer || value.value instanceof Buffer || value instanceof Stream || value.value instanceof Stream) {
-      // TODO buffer without filename is not accepted. 
+      // TODO buffer without filename is not accepted.
       if (type !== 'FILE_UPLOAD') {
         delete args[key];
       }

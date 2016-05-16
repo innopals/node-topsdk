@@ -11,6 +11,7 @@ Based on official SDK. Adding the following features:
 1. Support promise.
 1. Auto-generated validator for each api stub, and support `useValidators` options to turn it on/off.
 1. Upload Picture (beta)
+1. Parse large numbers from top api result (gt. Number.MAX_SAFE_INTEGER or lt Number.MIN_SAFE_INTEGER) into strings
 
 ## Get Started
 
