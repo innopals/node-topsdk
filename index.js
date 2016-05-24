@@ -5,17 +5,6 @@ var util = require('./util');
 var http = require('http');
 var agent = new http.Agent({ keepAlive: true, keepAliveMsecs: 5000 });
 
-function _wrapJSON(s) {
-  var matchs = s.match(/\"id\"\:\s?\d{16,}/g);
-  if (matchs) {
-    for (var i = 0; i < matchs.length; i++) {
-      var m = matchs[i];
-      s = s.replace(m, '"id":"' + m.split(':')[1].trim() + '"');
-    }
-  }
-  return s;
-};
-
 var IGNORE_ERROR_CODES = {
   'isv.user-not-exist:invalid-nick': 1
 };
@@ -25,21 +14,6 @@ var REQUEST_TYPES = {
   "post": "POST",
   "file_upload": "FILE_UPLOAD"
 };
-
-/**
- * Sign API request.
- * see http://open.taobao.com/doc/detail.htm?id=111#s6
- *
- * @param  {String} secret
- * @param  {Object} params
- * @return {String} sign string
- */
-function sign(secret, args) {
-  var sorted = Object.keys(args).sort();
-  var basestring = sorted.map(function(key) { return key + args[key]; }).join('');
-  basestring = secret + basestring + secret;
-  return util.md5(basestring).toUpperCase();
-}
 
 function request_api(endpoint, args, secret, type, callback) {
   if (typeof type === 'function') {
@@ -72,7 +46,7 @@ function request_api(endpoint, args, secret, type, callback) {
     args2sign[key] = value;
   });
 
-  args.sign = sign(secret, args2sign);
+  args.sign = util.sign(secret, args2sign);
 
   var options = {
     url: endpoint,
@@ -84,7 +58,7 @@ function request_api(endpoint, args, secret, type, callback) {
   request(options, function(err, response, buffer) {
     var data;
     if (buffer) {
-      buffer = _wrapJSON(buffer.toString());
+      buffer = util.wrapJSON(buffer.toString());
       try {
         data = JSON.parse(buffer);
       } catch (e) {
