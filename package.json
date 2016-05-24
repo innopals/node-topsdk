@@ -22,6 +22,6 @@
   },
   "scripts": {
     "generate-validators": "node tools/meta-parser.js && node tools/generate-validators.js",
-    "test": "mocha"
+    "test": "mocha -t 10000"
   }
 }
