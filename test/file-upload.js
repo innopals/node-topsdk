@@ -2,7 +2,7 @@ var expect = require('expect.js');
 var TopClient = require('../index');
 var config = require('../config'); // Use your own key to run tests.
 var client = new TopClient(config.app_key, config.app_secret, config.endpoint);
-var session = process.env.TOPSDK_TEST_SESSION;
+var session = config.session;
 var fs = require('fs'), path = require('path');
 var picIds = [];
 
@@ -27,6 +27,7 @@ describe("Testing taobao top sdk upload file with session", function() {
       title: 'node sdk testing image.'
     }, 'FILE_UPLOAD').then(function(data) {
       picIds.push(data.picture.picture_id);
+      expect(typeof data.picture.picture_id).to.eql('string'); // large number returned
       done();
     }).catch(done);
   });
@@ -44,20 +45,7 @@ describe("Testing taobao top sdk upload file with session", function() {
       title: 'node sdk testing image.'
     }, 'FILE_UPLOAD').then(function(data) {
       picIds.push(data.picture.picture_id);
-      done();
-    }).catch(done);
-  });
-
-  it("Get picture id correctly.", function(done) {
-    if (!session) {
-      expect(!!session).to.eql(true);
-      done();
-    }
-    client.execute('taobao.picture.get', {
-      session: session,
-      picture_id: "103890219696510122"
-    }).then(function(data) {
-      expect((data.pictures.picture[0] || {}).picture_id).to.eql("103890219696510122");
+      expect(typeof data.picture.picture_id).to.eql('string'); // large number returned
       done();
     }).catch(done);
   });
