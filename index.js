@@ -109,12 +109,12 @@ function TopClient(key, secret, endpoint, options) {
       if (useValidators) require('./validator')(method, args);
       args = Object.assign({}, args, { method: method, app_key: key });
       request_api(endpoint, args, secret, type, function(err, data) {
+        if (err) {
+          return r(err);
+        }
         if (rawResponse) {
           f(data);
           return;
-        }
-        if (err) {
-          return r(err);
         }
         var responseName = util.getApiResponseName(method), response = data[responseName];
         f(response);
