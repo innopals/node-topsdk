@@ -37,6 +37,9 @@ function request_api(endpoint, args, secret, type, callback) {
 
   Object.keys(args).forEach(function(key) {
     var value = args[key];
+    if (value === undefined) {
+        return;
+    }
     if (value instanceof Buffer || value.value instanceof Buffer || value instanceof Stream || value.value instanceof Stream) {
       // TODO buffer without filename is not accepted.
       if (type !== 'FILE_UPLOAD') {
@@ -109,12 +112,12 @@ function TopClient(key, secret, endpoint, options) {
       if (useValidators) require('./validator')(method, args);
       args = Object.assign({}, args, { method: method, app_key: key });
       request_api(endpoint, args, secret, type, function(err, data) {
+        if (err) {
+          return r(err);
+        }
         if (rawResponse) {
           f(data);
           return;
-        }
-        if (err) {
-          return r(err);
         }
         var responseName = util.getApiResponseName(method), response = data[responseName];
         f(response);
