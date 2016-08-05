@@ -3,7 +3,9 @@ var JSON = require('json-bigint')({ "storeAsString": true });
 var Stream = require('stream');
 var util = require('./util');
 var http = require('http');
-var agent = new http.Agent({ keepAlive: true, keepAliveMsecs: 5000 });
+var https = require('https');
+var httpAgent = new http.Agent({ keepAlive: true, keepAliveMsecs: 5000 });
+var httpsAgent = new https.Agent({ keepAlive: true, keepAliveMsecs: 5000 });
 
 var IGNORE_ERROR_CODES = {
   'isv.user-not-exist:invalid-nick': 1
@@ -52,7 +54,7 @@ function request_api(endpoint, args, secret, type, callback) {
     url: endpoint,
     method: type != 'GET' ? 'POST' : 'GET',
     [type === 'FILE_UPLOAD' ? "formData" : "form"]: args,
-    agent: agent
+    agent: endpoint.startsWith('https:') ? httpsAgent : httpAgent
   };
 
   request(options, function(err, response, buffer) {
