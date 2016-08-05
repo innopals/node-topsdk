@@ -54,7 +54,7 @@ function request_api(endpoint, args, secret, type, callback) {
     url: endpoint,
     method: type != 'GET' ? 'POST' : 'GET',
     [type === 'FILE_UPLOAD' ? "formData" : "form"]: args,
-    agent: endpoint.startsWith('https:') ? httpsAgent : httpAgent,
+    agent: endpoint.startsWith('https:') ? httpsAgent : httpAgent
   };
 
   request(options, function(err, response, buffer) {
