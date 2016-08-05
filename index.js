@@ -37,6 +37,9 @@ function request_api(endpoint, args, secret, type, callback) {
 
   Object.keys(args).forEach(function(key) {
     var value = args[key];
+    if (value === undefined) {
+        return;
+    }
     if (value instanceof Buffer || value.value instanceof Buffer || value instanceof Stream || value.value instanceof Stream) {
       // TODO buffer without filename is not accepted.
       if (type !== 'FILE_UPLOAD') {
