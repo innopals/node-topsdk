@@ -43,11 +43,13 @@ function TopClient(key, secret, endpoint, options) {
     });
     
     if (typeof callback !== 'function') {
+      var result_stream = null;
       proc.pipe = function(stream) {
         piped = true;
         if (useValidators) require('./validator')(method, args);
         args = Object.assign({}, args, { method: method, app_key: key });
-        request_api(endpoint, args, secret, type).pipe(stream);
+        if (!result_stream) result_stream = request_api(endpoint, args, secret, type);
+        return result_stream.pipe(stream);
       }
       return proc;
     }

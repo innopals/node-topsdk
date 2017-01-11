@@ -90,10 +90,12 @@ module.exports = function request_api(endpoint, args, secret, type, callback) {
     });
   });
 
+  var result_stream = null;
   return {
     pipe: function (stream) {
       piped = true;
-      request(options).pipe(stream);
+      if (!result_stream) result_stream = request(options);
+      return result_stream.pipe(stream);
     }
   }
 }
