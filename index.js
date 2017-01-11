@@ -44,6 +44,7 @@ function TopClient(key, secret, endpoint, options) {
     
     if (typeof callback !== 'function') {
       proc.pipe = function(stream) {
+        piped = true;
         if (useValidators) require('./validator')(method, args);
         args = Object.assign({}, args, { method: method, app_key: key });
         request_api(endpoint, args, secret, type).pipe(stream);

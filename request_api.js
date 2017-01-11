@@ -53,49 +53,47 @@ module.exports = function request_api(endpoint, args, secret, type, callback) {
     agent: endpoint.startsWith('https:') ? httpsAgent : httpAgent
   };
 
-  var stream = null;
+  var piped = false;
   // support piping.
   setTimeout(function () {
-    if (stream !== null) {
-      request(options).pipe(stream);
-    } else {
-      request(options, function (err, response, buffer) {
-        var data;
-        if (buffer) {
-          buffer = util.wrapJSON(buffer.toString());
-          try {
-            data = JSON.parse(buffer);
-          } catch (e) {
-            err = e;
-            e.data = buffer.toString();
-            data = null;
-          }
+    if (piped) return;
+    request(options, function (err, response, buffer) {
+      var data;
+      if (buffer) {
+        buffer = util.wrapJSON(buffer.toString());
+        try {
+          data = JSON.parse(buffer);
+        } catch (e) {
+          err = e;
+          e.data = buffer.toString();
+          data = null;
         }
-        var errRes = data && data.error_response;
-        if (errRes) {
-          if (!errRes.sub_msg || !IGNORE_ERROR_CODES[errRes.sub_code]) {
-            // no sub_msg error, let caller handle it.
-            var msg = errRes.msg + ', code ' + errRes.code;
-            if (errRes.sub_msg) {
-              msg += '; ' + errRes.sub_code + ': ' + errRes.sub_msg;
-            }
-            err = new Error(msg);
-            err.name = 'TOPClientError';
-            err.code = errRes.code;
-            err.sub_code = errRes.sub_code;
-            err.data = buffer.toString();
-            // data = null;
+      }
+      var errRes = data && data.error_response;
+      if (errRes) {
+        if (!errRes.sub_msg || !IGNORE_ERROR_CODES[errRes.sub_code]) {
+          // no sub_msg error, let caller handle it.
+          var msg = errRes.msg + ', code ' + errRes.code;
+          if (errRes.sub_msg) {
+            msg += '; ' + errRes.sub_code + ': ' + errRes.sub_msg;
           }
+          err = new Error(msg);
+          err.name = 'TOPClientError';
+          err.code = errRes.code;
+          err.sub_code = errRes.sub_code;
+          err.data = buffer.toString();
+          // data = null;
         }
+      }
 
-        callback(err, data);
-      });
-    }
+      callback(err, data);
+    });
   });
 
   return {
-    pipe: function (output) {
-      stream = output;
+    pipe: function (stream) {
+      piped = true;
+      request(options).pipe(stream);
     }
   }
 }
