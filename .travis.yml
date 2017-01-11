@@ -5,6 +5,6 @@ node_js:
   - "6"
 sudo: false
 before_script:
-  - npm install
+  - yarn install
 script:
   - npm test
