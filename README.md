@@ -22,13 +22,14 @@ Based on official SDK. Adding the following features:
 ## Get Started
 
 + [Basic Usage w/o Session Key](https://github.com/mbxc/node-topsdk/blob/master/test/basic.js)
++ [Passthrough TOP result using pipeline](https://github.com/mbxc/node-topsdk/blob/master/test/pipe.js)
 + [Uploading Picture](https://github.com/mbxc/node-topsdk/blob/master/test/file-upload.js)
 
 ### Default Configurable Options
 
 ```js
 new TopClient(key, secret, {
-  endpoint: 'http://gw.api.taobao.com/router/rest',
+  endpoint: 'https://eco.taobao.com/router/rest',
   useValidators: true,
   rawResponse: false
 });
