@@ -7,6 +7,10 @@ var https = require('https');
 var httpAgent = new http.Agent({ keepAlive: true, keepAliveMsecs: 5000 });
 var httpsAgent = new https.Agent({ keepAlive: true, keepAliveMsecs: 5000 });
 
+var IGNORE_ERROR_CODES = {
+  'isv.user-not-exist:invalid-nick': 1
+};
+
 var REQUEST_TYPES = {
   "get": "GET",
   "post": "POST",
@@ -58,34 +62,38 @@ module.exports = function request_api(endpoint, args, secret, type, callback) {
   setTimeout(function () {
     if (piped) return;
     request(options, function (err, response, buffer) {
-      var data;
-      if (buffer) {
-        buffer = util.wrapJSON(buffer.toString());
-        try {
-          data = JSON.parse(buffer);
-        } catch (e) {
-          err = e;
-          e.data = buffer.toString();
-          data = null;
-        }
-      }
-      var errRes = data && data.error_response;
-      if (errRes) {
-        if (!errRes.sub_msg || !IGNORE_ERROR_CODES[errRes.sub_code]) {
-          // no sub_msg error, let caller handle it.
-          var msg = errRes.msg + ', code ' + errRes.code;
-          if (errRes.sub_msg) {
-            msg += '; ' + errRes.sub_code + ': ' + errRes.sub_msg;
+      try {
+        var data;
+        if (buffer) {
+          buffer = util.wrapJSON(buffer.toString());
+          try {
+            data = JSON.parse(buffer);
+          } catch (e) {
+            err = e;
+            e.data = buffer.toString();
+            data = null;
           }
-          err = new Error(msg);
-          err.name = 'TOPClientError';
-          err.code = errRes.code;
-          err.sub_code = errRes.sub_code;
-          err.data = buffer.toString();
-          // data = null;
         }
+        var errRes = data && data.error_response;
+        if (errRes) {
+          if (!errRes.sub_msg || !IGNORE_ERROR_CODES[errRes.sub_code]) {
+            // no sub_msg error, let caller handle it.
+            var msg = errRes.msg + ', code ' + errRes.code;
+            if (errRes.sub_msg) {
+              msg += '; ' + errRes.sub_code + ': ' + errRes.sub_msg;
+            }
+            err = new Error(msg);
+            err.name = 'TOPClientError';
+            err.code = errRes.code;
+            err.sub_code = errRes.sub_code;
+            err.data = buffer.toString();
+            // data = null;
+          }
+        }
+      } catch (e) {
+        callback(e);
+        return;
       }
-
       callback(err, data);
     });
   });

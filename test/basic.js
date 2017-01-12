@@ -45,3 +45,16 @@ describe("Testing taobao top sdk without session (HTTPS)", function() {
   });
 
 });
+
+describe("Testing taobao top sdk error response", function() {
+
+  it("Test parsing top error response.", function(done) {
+    var client = new TopClient(config.app_key, config.app_secret, { endpoint: config.endpoint_https, rawResponse: true, useValidators: false });
+    client.execute('taobao.item.recommend.delete', { num_iid: 1234567890 }).then(function(data) {
+      delete data.error_response.request_id;
+      expect(data.error_response).to.eql({ code: 26, msg: 'Missing session' });
+      done();
+    }).catch(done);
+  });
+
+});
