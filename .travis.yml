@@ -1,10 +1,8 @@
 language: node_js
 node_js:
-  - "4"
-  - "5"
   - "6"
+  - "8"
+  - "11"
 sudo: false
-before_script:
-  - yarn install
 script:
   - npm test
