@@ -52,7 +52,8 @@ describe("Testing taobao top sdk error response", function() {
     var client = new TopClient(config.app_key, config.app_secret, { endpoint: config.endpoint_https, rawResponse: true, useValidators: false });
     client.execute('taobao.item.recommend.delete', { num_iid: 1234567890 }).then(function(data) {
       delete data.error_response.request_id;
-      expect(data.error_response).to.eql({ code: 26, msg: 'Missing session' });
+      expect(data.error_response.code).to.eql(26);
+      expect(data.error_response.msg).to.eql('Missing session');
       done();
     }).catch(done);
   });

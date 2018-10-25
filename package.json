@@ -1,24 +1,26 @@
 {
   "name": "topsdk",
-  "version": "1.0.10",
-  "description": "Taobao Open API Client by MingChuan.",
+  "version": "1.0.11",
+  "description": "Taobao Open API Client for nodejs.",
   "keywords": [
     "top",
     "taobao",
     "open api",
-    "top client"
+    "sdk",
+    "top client",
+    "nodejs"
   ],
   "repository": "mbxc/node-topsdk",
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
-    "json-bigint": "^0.2.0",
-    "request": "^2.72.0"
+    "json-bigint": "^0.3.0",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^2.4.5",
-    "xml2js": "^0.4.16"
+    "mocha": "^5.2.0",
+    "xml2js": "^0.4.19"
   },
   "scripts": {
     "generate-validators": "node tools/meta-parser.js && node tools/generate-validators.js",
