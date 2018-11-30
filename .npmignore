@@ -1,3 +1,7 @@
+node_modules
 test
 tools
 .gitignore
+.npmignore
+.travis.yml
+config.js
