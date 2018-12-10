@@ -15,7 +15,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "dependencies": {
-    "@types/node": "^10.12.10",
+    "@types/node": "^10.12.12",
     "json-bigint": "^0.3.0",
     "request": "^2.88.0"
   },
