@@ -7,7 +7,7 @@
 
 Based on [official API definition](http://open.taobao.com/doc2/api_list.htm) and written with minimum dependencies.
 
-[![Author: innopals](https://avatars3.githubusercontent.com/u/30520929?s=32&v=4)](https://github.com/innopals)
+[<img src="https://avatars3.githubusercontent.com/u/30520929?s=256&v=4" width="64" alt="innopals" title="Author: innopals"/>](https://github.com/innopals)
 
 ## Features
 
