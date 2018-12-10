@@ -1,13 +1,13 @@
 # Taobao TOP API Node SDK
 
-Author: github.com/innopals
-
 [![Travis CI Build Status](https://img.shields.io/travis/mbxc/node-topsdk/master.svg)](http://travis-ci.org/mbxc/node-topsdk)
 [![NPM Version](https://img.shields.io/npm/v/topsdk.svg)](https://npmjs.org/package/topsdk)
 [![NPM Downloads](https://img.shields.io/npm/dm/topsdk.svg)](https://npmjs.org/package/topsdk)
 [![Dependency Status](https://david-dm.org/mbxc/node-topsdk.svg)](https://david-dm.org/mbxc/node-topsdk)
 
 Based on [official API definition](http://open.taobao.com/doc2/api_list.htm) and written with minimum dependencies.
+
+[![Author: innopals](https://avatars3.githubusercontent.com/u/30520929?s=32&v=4)](https://github.com/innopals)
 
 ## Features
 
