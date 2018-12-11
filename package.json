@@ -1,6 +1,6 @@
 {
   "name": "topsdk",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Taobao Open API Client for nodejs.",
   "keywords": [
     "top",
