@@ -16,7 +16,7 @@
   "types": "index.d.ts",
   "dependencies": {
     "@types/node": "^13.9.1",
-    "json-bigint": "^0.3.0",
+    "json-bigint": "^1.0.0",
     "request": "^2.88.2"
   },
   "devDependencies": {
